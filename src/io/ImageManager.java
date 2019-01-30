@@ -1,6 +1,6 @@
 package io;
 
-import imagenes.JFrameImagen;
+import gui.JFrameImagen;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -72,7 +72,6 @@ public class ImageManager {
     public static void main(String args[]) throws IOException {
         Image ejemplo = ImageManager.openImage();
         JFrameImagen fo = new JFrameImagen(ejemplo);
-        fo.setVisible(true);
         fo.setTitle("Ejemplo");
         String path = "src/salidas/ejemplo";
         if(saveImage(path, ejemplo, "png")) { 

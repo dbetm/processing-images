@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package imagenes;
+package gui;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -17,9 +17,11 @@ public class JFrameImagen extends javax.swing.JFrame {
     /**
      * Creates new form JFrameImagen
      */
-    public JFrameImagen(Image imagen ) {
+    public JFrameImagen(Image imagen) {
         initComponents();
+        // Agregamos la imagen como icono en el JLabelImagen
         this.jLabelImagen.setIcon(new ImageIcon(imagen));
+        this.setVisible(true);
         setSize(imagen.getWidth(null)+30,imagen.getHeight(null)+30);
     }
 
