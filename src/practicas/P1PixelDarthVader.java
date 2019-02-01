@@ -64,7 +64,7 @@ public class P1PixelDarthVader {
         JFrameImagen fi = new JFrameImagen(ejemplo);
         // Instanciamos la clase para manipular la imagen
         // Primero definimos un delta
-        int delta = 20;
+        int delta = 30;
         // Luego un centro RGB
         Color centro = new Color(83, 43, 36);
         P1PixelDarthVader p1 = new P1PixelDarthVader(delta, centro);
