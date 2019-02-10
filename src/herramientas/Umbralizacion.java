@@ -22,7 +22,7 @@ public class Umbralizacion {
                 Color c = new Color(bi.getRGB(i, j));
                 // Calculamos la reducción por promedio
                 int prom = (c.getRed() + c.getGreen() + c.getRed()) / 3;
-                if(prom < umbral) {
+                if(prom > umbral) {
                     c = new Color(0, 0, 0);
                 }
                 else {
