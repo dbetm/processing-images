@@ -69,4 +69,16 @@ public class Histograma {
         Histograma h = new Histograma(img);
         h.graficarHistogramasRGB();
     }
+
+    public int[] getHistogramaR() {
+        return histogramaR;
+    }
+
+    public int[] getHistogramaG() {
+        return histogramaG;
+    }
+
+    public int[] getHistogramaB() {
+        return histogramaB;
+    }
 }
