@@ -50,7 +50,7 @@ public class P3Binarizar extends javax.swing.JFrame {
             this.x1, this.y1, Image.SCALE_DEFAULT)));
     }
     
-     private void calcularDimensionesLabels(int x1, int y1) {
+    private void calcularDimensionesLabels(int x1, int y1) {
         double p;
         
         if(y1 >= x1) {
