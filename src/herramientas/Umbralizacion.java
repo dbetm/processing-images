@@ -5,6 +5,7 @@ import io.ImageManager;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 import muestreo.Histograma;
 
@@ -38,7 +39,8 @@ public class Umbralizacion {
         return ImageManager.toImage(bi);
     }
     
-    public static int calcularUmbral(int histograma[]) {
+    // Algoritmo ISODATA
+    public static int calcularUmbralISODATA(int histograma[]) {
         // Calculamos un umbral inicial aleatorio
         int nuevoUmbral = new Random().nextInt(256);
         
@@ -82,6 +84,58 @@ public class Umbralizacion {
         return (int)((u1 + u2) / 2);
     }
     
+    public static int calcularUmbralOtsu(int[] hist, int m, int n) {
+        int umbral = 125;
+        int len = hist.length;
+        double sumasAcumulativas[] = new double[len];
+        double mediasAcumulativas[] = new double[len];
+        double mediaGlobal;
+        double pi = hist[0] / (m * n);
+        sumasAcumulativas[0] = pi;
+        mediasAcumulativas[0] = 0;
+        
+        for (int i = 1; i < len; i++) {
+            pi = hist[i] / (m * n);
+            sumasAcumulativas[i] = sumasAcumulativas[i-1] + pi;
+            System.out.println("pi: " + pi);
+            System.out.println("");
+            mediasAcumulativas[i] = sumasAcumulativas[i] * i;
+            // System.out.println("");
+        }
+        System.out.println("");
+        mediaGlobal = mediasAcumulativas[len-1];
+        
+        // Ahora se busca la varianza máxima
+        
+        // Hipótesis
+        double varianzaMax = (mediaGlobal*sumasAcumulativas[0] - mediasAcumulativas[0]);
+        varianzaMax *= varianzaMax;
+        varianzaMax /= (sumasAcumulativas[0]*(1 - sumasAcumulativas[0]));
+        ArrayList<Integer> k = new ArrayList<>();
+        k.add(0);
+        
+        for (int i = 1; i < len; i++) {
+            double var = (mediaGlobal*sumasAcumulativas[i] - mediasAcumulativas[i]);
+            var *= varianzaMax;
+            var /= (sumasAcumulativas[i]*(1 - sumasAcumulativas[i]));
+            if(var == varianzaMax) k.add(i);
+            else if(var > varianzaMax) {
+                k.clear();
+                k.add(i);
+                varianzaMax = var;
+            }
+        }
+        umbral = obtenerPromedio(k);
+        System.out.println(umbral);
+        return umbral;
+    }
+    
+    private static int obtenerPromedio(ArrayList<Integer> k) {
+        int sum = 0;
+        for (int i = 0; i < k.size(); i++) sum += k.get(i);
+        return sum/k.size();
+    }
+    
     public static void main(String args[]) {
         Image original = ImageManager.openImage();
         JFrameImagen fi = new JFrameImagen(original);
@@ -91,7 +145,9 @@ public class Umbralizacion {
         Histograma h = new Histograma(grises);
         h.graficarHistogramasRGB();
         // Calcular el umbral
-        int umbral = calcularUmbral(h.getHistogramaR());
+        //int umbral = calcularUmbralISODATA(h.getHistogramaR());
+        int umbral = calcularUmbralOtsu(h.getHistogramaR(), grises.getHeight(null), 
+            grises.getWidth(fi));
         // El resultado lo mostramos en otro frame
         Image resultado = Umbralizacion.umbralizacionSimple(umbral, original);
         // Mostrar el resultado en otro frame
