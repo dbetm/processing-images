@@ -2,9 +2,14 @@ package herramientas;
 
 import gui.JFrameImagen;
 import io.ImageManager;
+import static io.ImageManager.saveImage;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import muestreo.Histograma;
 
 /**
@@ -225,13 +230,13 @@ public class Expansion {
     
     public static void main(String args[]) {
         Image original = ImageManager.openImage();
-        JFrameImagen fi = new JFrameImagen(original);
+        //JFrameImagen fi = new JFrameImagen(original);
         // Mostramos los histogramas
-        Histograma h = new Histograma(original);
-        h.graficarHistogramasRGB();
+        //Histograma h = new Histograma(original);
+        //h.graficarHistogramasRGB();
         /*
         // Procesamos, expansión lineal con rango
-        Image res = Expansion.expansionLinealConRango(original, 103, 152);
+        Image res = Expansion.expansionLinealConRango(original, 0, 380);
         // Mostramos el resultado
         JFrameImagen fo = new JFrameImagen(res);
         // Y el histograma
@@ -242,6 +247,7 @@ public class Expansion {
         
         
         // Procesamos expansion lineal automática
+        /*
         int min = Math.min(Math.min(calcularMinimo(h.getHistogramaR()), 
             calcularMinimo(h.getHistogramaG())), calcularMinimo(h.getHistogramaB()));
         
@@ -250,8 +256,8 @@ public class Expansion {
         
         // Centrar
         original = Expansion.centrar(min, max, original);
-        h = new Histograma(original);
-        h.graficarHistogramasRGB();
+        //h = new Histograma(original);
+        //h.graficarHistogramasRGB();
         
         Image res2 = Expansion.expansionLineal(min, max, original);
         // Mostramos el resultado
@@ -260,25 +266,52 @@ public class Expansion {
         // Mostramos los histogramas
         Histograma his2 = new Histograma(res2);
         his2.graficarHistogramasRGB();
-        
-        
-        /*
-        // Expansión logarítmica
-        Image res = Expansion.expansionLogaritmica(original);
-        // Mostramos el resultado
-        JFrameImagen fos = new JFrameImagen(res);
-        // Y el histograma
-        // Mostramos los histogramas
-        Histograma his = new Histograma(res);
-        his.graficarHistogramasRGB();
         */
         
+        
+        // Expansión logarítmica
         /*
-        // Expansión exponencial
-        Image res = Expansion.expansionExponencial(original, 4);
+        Image res = Expansion.expansionLogaritmica(original, -48);;
+        
+//        Random ran = new Random();
+//        for (int i = 0; i < 100; i++) {
+//            try {
+//                int x = ran.nextInt(201);
+//                if(ran.nextBoolean()) x = -x;
+//                System.out.println("x: " + x);
+//                String path = "/home/david/Imágenes/0-image-processing/pExpansion/j_"+x;
+//                res = Expansion.expansionLogaritmica(original, x);
+//                saveImage(path, res, "png");
+//            } catch (IOException ex) {
+//                Logger.getLogger(Expansion.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+        
+        
         // Mostramos el resultado
         JFrameImagen fos = new JFrameImagen(res);
         // Y el histograma
+        Histograma his = new Histograma(res);
+        his.graficarHistogramasRGB();
+        
+        */
+        
+        // Expansión exponencial
+        /*
+        Image res = Expansion.expansionExponencial(original, 0.1);
+//        Random ran = new Random();
+//        for (double i = -0.9; i < 1; i += 0.1) {
+//            try {
+//                String path = 
+//                    "/home/david/Imágenes/0-image-processing/pExpansion/j_" + String.format("%.2f", i);
+//                res = Expansion.expansionExponencial(original, i);
+//                saveImage(path, res, "png");
+//            } catch (IOException ex) {
+//                Logger.getLogger(Expansion.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+        // Mostramos el resultado
+        JFrameImagen fos = new JFrameImagen(res);
         // Mostramos los histogramas
         Histograma his = new Histograma(res);
         his.graficarHistogramasRGB();
@@ -286,15 +319,28 @@ public class Expansion {
         
         
         // Expansión propuesta por mi
-        /*
+        
         // Hace un negativo con un contraste más alto
-        Image res = Expansion.expansionDavid(original, 1);
+        Image res = Expansion.expansionDavid(original, -58);;
+//        Random ran = new Random();
+//        for (int i = 0; i < 100; i++) {
+//            try {
+//                int x = ran.nextInt(201);
+//                if(ran.nextBoolean()) x = -x;
+//                System.out.println("x: " + x);
+//                String path = 
+//                    "/home/david/Imágenes/0-image-processing/pExpansion/j_"+x;
+//                res = Expansion.expansionDavid(original, x);
+//                saveImage(path, res, "png");
+//            } catch (IOException ex) {
+//                Logger.getLogger(Expansion.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+        
         // Mostramos el resultado
         JFrameImagen fos = new JFrameImagen(res);
         // Y el histograma
-        // Mostramos los histogramas
         Histograma his = new Histograma(res);
         his.graficarHistogramasRGB();
-        */
     }
 }
