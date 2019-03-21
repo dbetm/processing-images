@@ -12,6 +12,90 @@ import java.awt.image.BufferedImage;
  */
 public class Convolucion {
     
+    public static Image convolucionar(Image original, double kernels[][][], 
+        double divisor) {
+        int ancho = original.getWidth(null);
+        int alto = original.getHeight(null);
+        int numKernels = kernels.length;
+        int tamKernel = kernels[0].length;
+        BufferedImage bi = ImageManager.toBufferedImage(original);
+        BufferedImage nueva = new BufferedImage(original.getWidth(null), 
+            original.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        
+        // Proceso iterativo para generar una imagen nueva
+        for (int i = 0; i < ancho; i++) {
+            for (int j = 0; j < alto; j++) {
+                // Extraemos la muestra para el píxel actual
+                double muestra[][] = extraerMuestra(i, j, bi, tamKernel);
+                if(muestra != null) {
+                    Color colorRes = new Color(0, 0, 0);
+                    Color aux;
+                    // Probamos cada uno de los kernels
+                    for (int k = 0; k < numKernels; k++) {
+                        aux = aplicarKernel(kernels[k], muestra, divisor);
+                        // Obtenemos el mayor
+                        if(aux.getRGB() > colorRes.getRGB()) {
+                            colorRes = aux;
+                        }
+                    }
+                    // seteamos el color máximo obtenido de la convolución
+                    nueva.setRGB(i, j, colorRes.getRGB());
+                }
+                else {
+                    // si la muestra es nula, entonces seteamos el mismo color
+                    // de la imagen original
+                    nueva.setRGB(i, j, bi.getRGB(i, j));
+                }
+            }
+        }
+        
+        return ImageManager.toImage(nueva);
+    }
+    
+    public static double[][] extraerMuestra(int x, int y, BufferedImage bi, int n) {
+        double matriz[][] = new double[n][n];
+        int xx = 0;
+        int yy = 0;
+        try {
+            // recorremos la imagen
+            for(int i = x-(n-1)/2; i <= x+(n-1)/2; i++) {
+                for(int j = y-(n-1)/2; j <= y+(n-1)/2; j++){
+                    matriz[xx][yy] = bi.getRGB(i,j);
+                    yy++;
+                }
+                yy=0;
+                xx++;
+            }  
+            return matriz;
+        }
+        catch (Exception e) {
+            // System.out.println("Indice no valido");
+            return null;
+        }
+    }
+    
+    public static Color aplicarKernel(double[][] kernel, double[][] muestra, double divisor) {
+        double acumuladorR = 0;
+        double acumuladorG = 0;
+        double acumuladorB = 0;
+        Color aux;
+        // recorremos el kernel y la muestra
+        for(int x = 0; x < kernel[0].length; x++) {
+            for(int y = 0; y < kernel[0].length; y++) {
+                aux = new Color((int)muestra[x][y]);
+                acumuladorR += (kernel[x][y] * aux.getRed());
+                acumuladorG += (kernel[x][y] * aux.getGreen());
+                acumuladorB += (kernel[x][y] * aux.getBlue());
+            }
+        }
+        acumuladorR /= divisor;
+        acumuladorG /= divisor;
+        acumuladorB /= divisor;
+
+        return new Color((int)validarRangoRGB(acumuladorR), 
+            (int)validarRangoRGB(acumuladorG), (int)validarRangoRGB(acumuladorB));
+    }
+    
     public static Image convolucionar(Image imagenOriginal, double [][] kernel, double fD){
         BufferedImage bi = ImageManager.toBufferedImage(imagenOriginal);
         BufferedImage nueva = new BufferedImage(bi.getWidth(),bi.getHeight(),BufferedImage.TYPE_INT_RGB);
@@ -56,41 +140,7 @@ public class Convolucion {
                     (int)validarRangoRGB(aB));
                 // seteamos en el buffer nuevo
                 nueva.setRGB(i, j, color.getRGB());
-                /*
-                // valorar si aplica la convolucion, recorriendo el kernel
-                int cE = 0;
-                double aR = 0, aG = 0, aB = 0;
-                int xx = 0, yy = 0;
-                Color color;
-                for(int i=x-(kernel.length-1)/2;i<=x+(kernel.length-1)/2;i++,xx++) {
-                    yy = 0;
-                    for(int j=y-(kernel.length-1)/2;j<=y+(kernel.length-1)/2;j++,yy++){
-                        // con los valores de i y j consultamos al buffered
-                        try {
-                            color = new Color(bi.getRGB(i, j));
-                            aR+=kernel[xx][yy]*color.getRed();
-                            aG+=kernel[xx][yy]*color.getGreen();
-                            aB+=kernel[xx][yy]*color.getBlue();
-                        }
-                        catch(Exception e){
-                            // seteamos el color con la imagen original
-                            cE++;
-                            //nueva.setRGB(x, y, bi.getRGB(x, y));
-                        }
-                    }
-                    xx=0;
-                }
-                // aplicar el fD
-                aR/=(fD-cE);
-                aG/=(fD-cE);
-                aB/=(fD-cE);
-                color = new Color((int)validarRangoRGB(aR),(int)validarRangoRGB(aG),
-                    (int)validarRangoRGB(aB));
-                // seteamos en el buffer nuevo
-                nueva.setRGB(x, y,color.getRGB());
-                */
             }
-        
         }
         return ImageManager.toImage(nueva);
     }
@@ -136,7 +186,7 @@ public class Convolucion {
         fEdge.setTitle("Edge detection");
         
         // Laplacian operator normal
-        double laplacian[][] = new double[][]{{0,-1,0},{-1,4,-1},{0,-1,0}};
+        double laplacian[][] = new double[][]{{0,1,0},{1,-4,1},{0,1,0}};
         Image laplacianRes = Convolucion.convolucionar(original, laplacian, 1);
         JFrameImagen fLaplacian = new JFrameImagen(laplacianRes);
         fLaplacian.setTitle("Laplacian");
