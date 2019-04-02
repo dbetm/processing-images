@@ -145,9 +145,9 @@ public class Umbralizacion {
         Histograma h = new Histograma(grises);
         h.graficarHistogramasRGB();
         // Calcular el umbral
-        //int umbral = calcularUmbralISODATA(h.getHistogramaR());
-        int umbral = calcularUmbralOtsu(h.getHistogramaR(), grises.getHeight(null), 
-            grises.getWidth(fi));
+        int umbral = calcularUmbralISODATA(h.getHistogramaR());
+        //int umbral = calcularUmbralOtsu(h.getHistogramaR(), grises.getHeight(null), 
+        //    grises.getWidth(fi));
         // El resultado lo mostramos en otro frame
         Image resultado = Umbralizacion.umbralizacionSimple(umbral, original);
         // Mostrar el resultado en otro frame

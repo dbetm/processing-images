@@ -153,6 +153,13 @@ public class Convolucion {
     
     public static void main(String args[]) {
         Image original = ImageManager.openImage();
+        
+        double onder[][] = new double[][]{{0,1,0},{1,-4,1},{0,1,0}};
+        Image onderRes = Convolucion.convolucionar(original, onder, 1);
+        JFrameImagen fOnder = new JFrameImagen(onderRes);
+        fOnder.setTitle("Test Onder");
+        
+        /*
         // Aplicación de algunos filtros
         double repujado[][] = new double[][]{{-2,-1,0},{-1,1,1},{0,1,2}};
         Image repujadoRes = Convolucion.convolucionar(original, repujado, 1);
@@ -190,5 +197,7 @@ public class Convolucion {
         Image laplacianRes = Convolucion.convolucionar(original, laplacian, 1);
         JFrameImagen fLaplacian = new JFrameImagen(laplacianRes);
         fLaplacian.setTitle("Laplacian");
+
+        */
     }
 }
