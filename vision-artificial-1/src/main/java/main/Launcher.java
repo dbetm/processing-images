@@ -3,6 +3,7 @@ package main;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import preprocessing.Thresholding;
+import processing.CenterMass;
 import sampling.Capture;
 import sampling.LiveCamera;
 import tools.Histogram;
@@ -29,34 +30,35 @@ public class Launcher {
         Image img = null;
         Histogram hist;
         int umbral;
+        int ancho = cam.getWidth();
+        int alto = cam.getHeight();
+        int umbralAnterior = 63;
         
-        for(;;) {
+        while(true) {
             try {
                 // Obtener muestra
                 bi = capture.getBufferedImage();
                 // Preprocesar
-                Utilities.toGrayScales(bi);
+                Utilities.toGrayScales(bi, ancho, alto);
                 hist = new Histogram(bi);
-                umbral = Thresholding.Isodata(hist.getHistogramG());
-                Thresholding.simple(umbral, bi);
+                umbral = Thresholding.Isodata(hist.getHistogramR());
+                if(umbral == 0) umbral = umbralAnterior;
+                System.out.print("");
+                Thresholding.simple(umbral, bi, ancho, alto);
                 // Procesar
+                CenterMass.draw(bi, ancho, alto, "apple");
+                //CenterMass.draw(bi, ancho, alto, "square");
+                //CenterMass.draw(bi, ancho, alto, "heart");
+                //CenterMass.draw(bi, ancho, alto, "target");
                 // Mostrar salida
                 out.updateImage(bi);
-                Thread.sleep(200);
+                // Imagen a 10 FPS
+                Thread.sleep(100);
+                if(umbral > 0) umbralAnterior = umbral;
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        
-        
-        /*
-        try {
-            ImageIO.write(capture.getBufferedImage(), "PNG", new File("assets/test2.png"));
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        */
     }
 }

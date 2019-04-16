@@ -17,11 +17,11 @@ public class Capture extends Thread {
 
     @Override
     public void run() {
-        for(;;) {
+        while(true) {
             try {
                 this.bi = this.cam.capturar();
-                // Para que vaya 5 FPS
-                Thread.sleep(200);
+                // Para que vaya 10 FPS
+                Thread.sleep(100);
             }
             catch (Exception e) {
                 e.printStackTrace();

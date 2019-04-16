@@ -12,11 +12,15 @@ import javax.swing.JFrame;
  */
 public class LiveCamera {
     private Webcam webcam;
+    private int width;
+    private int height;
 
     public LiveCamera() {
         this.webcam = Webcam.getDefault();
         // Configuramos la resolución
         this.webcam.setViewSize(WebcamResolution.VGA.getSize());
+        this.width = WebcamResolution.VGA.getWidth();
+        this.height = WebcamResolution.VGA.getHeight();
     }
     
     public void iniciarMuestreo() {
@@ -37,5 +41,13 @@ public class LiveCamera {
     
     public BufferedImage capturar() {
         return this.webcam.getImage();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

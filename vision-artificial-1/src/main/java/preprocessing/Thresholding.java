@@ -10,22 +10,19 @@ import java.util.Random;
  */
 public class Thresholding {
     
-    public static BufferedImage simple(int umbral, BufferedImage bi) {
-        int ancho = bi.getWidth(null);
-        int alto = bi.getHeight(null);
+    public static void simple(int umbral, BufferedImage bi, int ancho, int alto) {
         // Recorremos el Buffer
         for (int i = 0; i < ancho; i++) {
             for (int j = 0; j < alto; j++) {
                 Color c = new Color(bi.getRGB(i, j));
                 // Calculamos la reducción por promedio
-                int prom = (c.getRed() + c.getGreen() + c.getRed()) / 3;
+                int prom = (c.getRed() + c.getGreen() + c.getBlue()) / 3;
                 if(prom < umbral) c = new Color(0, 0, 0);
                 else c = new Color(255, 255, 255);
                 // Seteamos el pixel con base al nuevo tono generado
                 bi.setRGB(i, j, c.getRGB());
             }
         }
-        return bi;
     }
     
 //    // Algoritmo ISODATA
@@ -48,17 +45,17 @@ public class Thresholding {
     public static int Isodata(int histograma[]){
         // calculamos el umbral inicial
         Random ran = new Random();
-        int uR = ran.nextInt(256);
+        int uR = ran.nextInt(255);
         int uA;
         // hacemos el proceso iterativo de reajuste dl umbral inicial
         do  {
             uA = uR;    
             uR = readjust(uA,histograma);
-        } while(uR!=uA);
+        } while(uR != uA);
     
         return uR;
     }
-    
+    /*
     private static int readjust(int umbral, int histograma[]) {
         // Acumuladores
         int productoFrec = 0, frecuencias = 0;
@@ -84,5 +81,24 @@ public class Thresholding {
         int u2 = productoFrec / frecuencias;
         
         return (int)((u1 + u2) / 2);
+    }
+    */
+    private static int readjust(int u, int[] histograma) {
+       int aFi=0, aPi=0;
+       int aFd=0, aPd=0;
+       aPi += histograma[0];
+       for(int x = 1;x < u; x++) {
+            aPi += histograma[x] * x;
+            aFi += histograma[x];
+       }
+       for(int y = u;y < histograma.length; y++){
+            aPd += histograma[y] * y;
+            aFd += histograma[y];
+       }
+       if(aFi==0 || aFd==0) return 0;
+       int uI = aPi / aFi;
+       int uD = aPd / aFd;
+       
+       return (int)((uI + uD) / 2);
     }
 }
