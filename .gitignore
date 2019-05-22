@@ -23,3 +23,14 @@
 hs_err_pid*
 /build/
 /dist/
+/artificial-vision-p1/.nb-gradle/
+/artificial-vision-p1/build/
+/vision-artificial-1/.nb-gradle/
+/vision-artificial-1/build/
+/Examen2/nbproject/private/
+/Examen2/build/
+/Examen2/dist/
+/visionArtificial_p1/.nb-gradle/
+/vision-artificial-1/target/
+/Chat4CM2/nbproject/private/
+/Chat4CM2/build/
