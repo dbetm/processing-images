@@ -31,14 +31,14 @@ public class FiltroIdealPasaAltas extends Filtro {
                 if(p > this.radio) {
                     // pintamos en blanco
                     color = new Color(255, 255, 255);
-                    //aux[i][j] = new Complejo(color.getRGB(), 0);
-                    aux[i][j] = new Complejo(1, 1);
+                    aux[i][j] = new Complejo(color.getRGB(), color.getRGB());
+                    //aux[i][j] = new Complejo(1, 0);
                 }
                 else {
                     // pintamos en negro
                     color = new Color(0, 0, 0);
-                    //aux[i][j] = new Complejo(color.getRGB(), 0);
-                    aux[i][j] = new Complejo(0, 0);
+                    aux[i][j] = new Complejo(color.getRGB(), color.getRGB());
+                    //aux[i][j] = new Complejo(0, 0);
                 }
             }
         }

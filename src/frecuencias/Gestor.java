@@ -204,9 +204,12 @@ public class Gestor {
         
         // ### Aplicar el filtro ###
         // Creamos un filtro
-        //FiltroIdealPasaBajas filtro = new FiltroIdealPasaBajas(ancho, alto, 200);
-        FiltroIdealPasaAltas filtro = new FiltroIdealPasaAltas(ancho, alto, 340);
+        //FiltroIdealPasaBajas filtro = new FiltroIdealPasaBajas(ancho, alto, 2);
+        //FiltroIdealPasaAltas filtro = new FiltroIdealPasaAltas(ancho, alto, 340);
         //FiltroTrapezoidal filtro = new FiltroTrapezoidal(ancho, alto, 5, 50);
+        //FiltroExponencialPasabajas filtro = new FiltroExponencialPasabajas(ancho, alto, 40, 4);
+        //FiltroButterworthPasabajas filtro = new FiltroButterworthPasabajas(ancho, alto, 256, 5);
+        FiltroTrapezoidal filtro = new FiltroTrapezoidal(ancho, alto, 100, 200);
         filtro.generar();
         Complejo matrizFiltro[][] = filtro.getMatriz();
         gestor.aplicarFiltro(matrizFiltro);

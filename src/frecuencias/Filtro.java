@@ -27,9 +27,11 @@ public abstract class Filtro {
         // Recorrer el buffered
         for (int i = 0; i < ancho; i++) {
             for (int j = 0; j < alto; j++) {
-                //int rgb = (int)this.matriz[i][j].getReal();
+                int rgb = (int)this.matriz[i][j].getReal();
                 //bi.setRGB(i, j, rgb);
                 double valor = matriz[i][j].getReal() * 255;
+                //System.out.println("Valor: " + valor);
+                valor = HerramientasColor.validarRangoRGB((int) valor);
                 bi.setRGB(i, j, new Color((int)valor,(int)valor,(int)valor).getRGB());
             }
         }

@@ -38,7 +38,7 @@ public class FiltroTrapezoidal extends Filtro {
                 int res2 = (int)(res*255);
                 // asignamos en el color que le asignamos
                 Color color = new Color(res2, res2, res2);
-                aux[i][j] = new Complejo(color.getRGB(), 0);
+                aux[i][j] = new Complejo(res, 0);
             }
         }
     }
